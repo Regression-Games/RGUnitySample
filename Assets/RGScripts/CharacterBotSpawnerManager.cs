@@ -1,4 +1,5 @@
 using RegressionGames;
+using RegressionGames.Types;
 using UnityEngine;
 
 public class CharacterBotSpawnerManager : RGBotSpawnManager
@@ -12,35 +13,20 @@ public class CharacterBotSpawnerManager : RGBotSpawnManager
     [Tooltip("Spawn point for RG Bots")]
     private Transform botSpawnPoint;
 
-    public override GameObject GetBotPrefab()
+    public override GameObject SpawnBot(bool lateJoin, BotInformation botInformation)
     {
-        return rgBotPrefab;
-    }
+        Debug.Log("Spawning SAMPLE BOT");
+        var bot = Instantiate(rgBotPrefab, Vector3.zero, Quaternion.identity);
+        bot.transform.position = botSpawnPoint.position;
 
-    public override Transform GetBotSpawn()
-    {
-        return botSpawnPoint;
-    }
-
-    public override GameObject SpawnBot(bool lateJoin, uint clientId, string botName, string characterConfig)
-    {
-        Debug.Log($"LATE JOIN ${lateJoin}");
-        GameObject spawnedBot = base.SpawnBot(lateJoin, clientId, botName, characterConfig);
-        // Do something special, like configuration, creating a networked object, etc...
-
-        RGPlayerMoveAction moveAction = spawnedBot.GetComponent<RGPlayerMoveAction>();
-        BotCharacterConfig config = JsonUtility.FromJson<BotCharacterConfig>(characterConfig);
+        RGPlayerMoveAction moveAction = bot.GetComponent<RGPlayerMoveAction>();
+        BotCharacterConfig config = botInformation.ParseCharacterConfig<BotCharacterConfig>();
         if (config != null)
         {
             Debug.Log($"Changed speed to ${config.speed}");
             moveAction.speed = config.speed;
         }
-        return spawnedBot;
+        return bot;
     }
-
-    public override void TeardownBot(uint clientId)
-    {
-        base.TeardownBot(clientId);
-        // Now do something special, like cleaning network information or cleaning up state.
-    }
+    
 }
