@@ -136,7 +136,7 @@
       "url": "https://packages.unity.com"
     },
     "gg.regression.unity.bots": {
-      "version": "file:/Users/aaronvontell/Projects/RGUnityBots",
+      "version": "file:../../RGUnityBots",
       "depth": 0,
       "source": "local",
       "dependencies": {}
