@@ -29,6 +29,7 @@ public class GameLoop : MonoBehaviour
             }
         }
         RGBotServerListener.GetInstance()?.StartGame();
+        RGBotServerListener.GetInstance()?.SpawnBots();
     }
 
     private void OnDestroy()
