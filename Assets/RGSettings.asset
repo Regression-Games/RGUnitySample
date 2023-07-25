@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b16df64393aa4eacbecfc23dc03c35c, type: 3}
   m_Name: RGSettings
   m_EditorClassIdentifier: 
-  useSystemSettings: 0
+  useSystemSettings: 1
   enableOverlay: 1
   numBots: 0
   email: rgunitydev@rgunity.com
   password: Password1
   botsSelected: 
+  logLevel: 3
+  rgHostAddress: http://localhost
+  rgPort: 8080

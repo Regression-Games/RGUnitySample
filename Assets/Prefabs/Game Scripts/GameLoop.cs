@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RegressionGames;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,26 +14,12 @@ public class GameLoop : MonoBehaviour
 
     void Awake()
     {
-        RGSettings rgSettings = RGSettings.GetOrCreateSettings();
-        if (rgSettings.GetUseSystemSettings())
-        {
-            int[] botIds = rgSettings.GetBotsSelected().ToArray();
-            int errorCount = 0;
-            Task.WhenAll(botIds.Select(botId =>
-                RGServiceManager.GetInstance()
-                    ?.QueueInstantBot((long)botId, (botInstance) => { }, () => errorCount++)));
-            if (errorCount > 0)
-            {
-                Debug.Log($"Error starting {errorCount} of {botIds.Length} RG bots, starting without them");
-            }
-        }
-        RGBotServerListener.GetInstance()?.StartGame();
-        RGBotServerListener.GetInstance()?.SpawnBots();
+        
     }
 
     private void OnDestroy()
     {
-        RGBotServerListener.GetInstance()?.StopGame();
+        
     }
 
     // Update is called once per frame
