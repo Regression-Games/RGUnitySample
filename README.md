@@ -1,6 +1,6 @@
 # RGSample
 
-_This is the **completed** sample. Seeing the **starter** branch for the beginning of the [tutorial](https://regression-games.github.io/RegressionDocs/studios/unity/tutorials/first_tutorial)._
+_This is the **completed** sample. See the **starter** branch for the beginning of the [tutorial](https://regression-games.github.io/RegressionDocs/studios/unity/tutorials/first_tutorial)._
 
 ```
 git checkout -b starter
