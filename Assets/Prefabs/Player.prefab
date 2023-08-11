@@ -144,8 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1975d5c35537c49bf9ae205667ef248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 1
   objectType: Player
-  isStatic: 0
   syncPosition: 1
   syncRotation: 1
 --- !u!114 &2164446116717743840
