@@ -43,7 +43,7 @@ jobs:
       - name: Print Parameters
         env:
           RG_BOT: ${{ secrets.RG_BOT }}
-        run: echo "Using RG Bot ${{ RG_BOT }} for this test (set using the RG_BOT GitHub Secret"
+        run: echo "Using RG Bot ${{ env.RG_BOT }} for this test (set using the RG_BOT GitHub Secret"
 
       # Test
       - name: Run tests
