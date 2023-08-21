@@ -2,6 +2,9 @@ name: Regression Games Bots QA 🤖
 
 on: [push, pull_request]
 
+permissions:
+  actions: write
+
 jobs:
   build:
     name: Build my project ✨
