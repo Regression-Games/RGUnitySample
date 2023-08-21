@@ -7,13 +7,13 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      # Checkout (without LFS)
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
       - name: Clone Regression Games SDK
         working-directory: /github
         run: git clone https://github.com/Regression-Games/RGUnityBots.git
+          
+      # Checkout (without LFS)
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       # Git LFS
       - name: Create LFS file list
