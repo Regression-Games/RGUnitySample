@@ -18,5 +18,5 @@ MonoBehaviour:
   email: rgunitydev@rgunity.com
   password: Password1
   botsSelected: 
-  logLevel: 0
+  logLevel: 1
   rgHostAddress: http://localhost:8080
