@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Clone Regression Games SDK
-        run: git clone https://github.com/Regression-Games/RGUnityBots.git ../../RGUnityBots
+        run: git clone https://github.com/Regression-Games/RGUnityBots.git /github/RGUnityBots
 
       # Git LFS
       - name: Create LFS file list
@@ -39,6 +39,11 @@ jobs:
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
+            
+      - name: Print Parameters
+        env:
+          RG_BOT: ${{ secrets.RG_BOT }}
+        run: echo "Using RG Bot ${{ RG_BOT }} for this test (set using the RG_BOT GitHub Secret"
 
       # Test
       - name: Run tests
