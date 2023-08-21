@@ -1,4 +1,4 @@
-name: Regression Games Bots QA 
+name: Regression Games Bots QA 🤖
 
 on: [push, pull_request]
 
