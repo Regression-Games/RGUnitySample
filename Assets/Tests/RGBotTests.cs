@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using RegressionGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,35 +13,26 @@ public class RGBotTests
     public IEnumerator RunBotTest()
     {
         
-        // DEBUG: Set env vars for simulation
-        Debug.Log("CUSTOM PARAMETERS");
-        Debug.Log(Environment.GetEnvironmentVariable("CUSTOM_PARAMETERS"));
-        Debug.Log("Command Line Args:" + string.Join("~~~", Environment.GetCommandLineArgs()));
-        // Environment.SetEnvironmentVariable(RGEnvVars.RG_API_KEY, "33a213ec-04bf-42cb-b2b6-9f430856f766");
-        // Environment.SetEnvironmentVariable(RGEnvVars.RG_HOST, "http://localhost:8080");
-        // Environment.SetEnvironmentVariable(RGEnvVars.RG_BOT, "1000015");
-        
-        Debug.Log("HOST");
-        Debug.Log(RGEnvConfigs.ReadHost());
-        Debug.Log("BOT");
-        Debug.Log(RGEnvConfigs.ReadBotId());
+        // For in-editor purposes, feel free to define a default bot to use!
+        int botId = 0;
 
+        // NOTE: Make sure to fill in the name of the scene to start your test with!
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Scenes/SampleScene", LoadSceneMode.Single);
-        // Wait until the level finish loading
+        // Wait until the scene finishes loading, then wait a frame so every Awake and Start method is called
         while (!asyncLoadLevel.isDone)
             yield return null;
-        // Wait a frame so every Awake and Start method is called
         yield return new WaitForEndOfFrame();
 
-        // Start the bot
-        var providedBotId = RGEnvConfigs.ReadBotId();
-        if (providedBotId == null)
+        // Grab the bot to start (override with the one from CI/CD if defined)
+        if (RGEnvConfigs.ReadBotId() != null)
         {
-            Assert.Fail("No Bot ID given within env var 'RG_BOT' - please make sure to set this in your CI env");
+            botId = Int32.Parse(RGEnvConfigs.ReadBotId());
         }
-        int[] botIds = {Int32.Parse(providedBotId)};
+        int[] botIds = {botId};
+        Debug.Log($"Running test with bots {string.Join(", ", botIds)}");
+        
+        // Start the bots
         int errorCount = 0;
-        // Let the test run
         RGBotServerListener.GetInstance().StartGame();
         Task.WhenAll(botIds.Select(delegate(int botId)
         {
@@ -59,7 +49,7 @@ public class RGBotTests
         }
         RGBotServerListener.GetInstance().SpawnBots();
         
-        // First, wait until a bot is connected
+        // Wait until at least one bot is connected
         while (!RGBotServerListener.GetInstance().HasBotsRunning())
             yield return null;
         
@@ -67,8 +57,8 @@ public class RGBotTests
         while (RGBotServerListener.GetInstance().HasBotsRunning())
             yield return null;
         
+        // Cleanup when done
         RGBotServerListener.GetInstance()?.StopGame();
-        
     }
     
 }
