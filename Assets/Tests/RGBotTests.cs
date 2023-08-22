@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using RegressionGames;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,9 +13,12 @@ public class RGBotTests
     [UnityTest]
     public IEnumerator RunBotTest()
     {
-        string botId = "1000010";//Environment.GetEnvironmentVariable("RG_BOT");
-        string rgApiKey = "something"; //Environment.GetEnvironmentVariable("RG_API_KEY");
         
+        // DEBUG: Set env vars for simulation
+        Environment.SetEnvironmentVariable(RGEnvVars.RG_API_KEY, "33a213ec-04bf-42cb-b2b6-9f430856f766");
+        Environment.SetEnvironmentVariable(RGEnvVars.RG_HOST, "http://localhost:8080");
+        Environment.SetEnvironmentVariable(RGEnvVars.RG_BOT, "1000015");
+
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Scenes/SampleScene", LoadSceneMode.Single);
         // Wait until the level finish loading
         while (!asyncLoadLevel.isDone)
@@ -22,10 +26,13 @@ public class RGBotTests
         // Wait a frame so every Awake and Start method is called
         yield return new WaitForEndOfFrame();
 
-        // Assert.AreEqual(botId, "32");
-        // Assert.AreEqual(rgApiKey, "ABC");
         // Start the bot
-        int[] botIds = {Int32.Parse(botId)};
+        var providedBotId = Environment.GetEnvironmentVariable(RGEnvVars.RG_BOT);
+        if (providedBotId == null)
+        {
+            Assert.Fail("No Bot ID given within env var 'RG_BOT' - please make sure to set this in your CI env");
+        }
+        int[] botIds = {Int32.Parse(providedBotId)};
         int errorCount = 0;
         // Let the test run
         RGBotServerListener.GetInstance().StartGame();
@@ -44,8 +51,12 @@ public class RGBotTests
         }
         RGBotServerListener.GetInstance().SpawnBots();
         
-        var startTime2 = DateTime.Now;
-        while (DateTime.Now.Subtract(startTime2).TotalSeconds < 10)
+        // First, wait until a bot is connected
+        while (!RGBotServerListener.GetInstance().HasBotsRunning())
+            yield return null;
+        
+        // Now run until all bots complete their tasks
+        while (RGBotServerListener.GetInstance().HasBotsRunning())
             yield return null;
         
         RGBotServerListener.GetInstance()?.StopGame();
