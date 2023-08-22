@@ -15,9 +15,9 @@ public class RGBotTests
     {
         
         // DEBUG: Set env vars for simulation
-        Environment.SetEnvironmentVariable(RGEnvVars.RG_API_KEY, "33a213ec-04bf-42cb-b2b6-9f430856f766");
-        Environment.SetEnvironmentVariable(RGEnvVars.RG_HOST, "http://localhost:8080");
-        Environment.SetEnvironmentVariable(RGEnvVars.RG_BOT, "1000015");
+        // Environment.SetEnvironmentVariable(RGEnvVars.RG_API_KEY, "33a213ec-04bf-42cb-b2b6-9f430856f766");
+        // Environment.SetEnvironmentVariable(RGEnvVars.RG_HOST, "http://localhost:8080");
+        // Environment.SetEnvironmentVariable(RGEnvVars.RG_BOT, "1000015");
 
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Scenes/SampleScene", LoadSceneMode.Single);
         // Wait until the level finish loading

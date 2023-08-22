@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2551bfd07694c75a2ab63010f2fe50, type: 3}
   m_Name: CustomReplayModels
   m_EditorClassIdentifier: 
-  models: []
+  models:
+  - objectType: Player
+    modelPrefab: {fileID: 8162350483333831978, guid: 5be3b072452b545bca28cdca395794a8, type: 3}
+  - objectType: PowerUp
+    modelPrefab: {fileID: 4762153950778196748, guid: edd374ed2fa96445385a7aa14c7df1f4, type: 3}
