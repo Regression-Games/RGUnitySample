@@ -1,12 +1,13 @@
 name: Regression Games Bots QA 🤖
 
-on: [push, pull_request]
+on: [push]
 
+# See https://game.ci/docs/github/test-runner and RG_DOCS for more info
 jobs:
   build:
     name: Build my project ✨
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions: write-all # This is to allow writing results into the artifacts section of GitHub Actions
     steps:
           
       # Checkout (without LFS)
@@ -39,6 +40,7 @@ jobs:
             Library-
 
       # Test
+      # See https://game.ci/docs/github/test-runner for more information
       - name: Run tests
         uses: game-ci/unity-test-runner@v2
         env:
@@ -46,17 +48,8 @@ jobs:
           RG_BOT: ${{ secrets.RG_BOT }}
           RG_API_KEY: ${{ secrets.RG_API_KEY }}
         with:
+          customParameters: -RG_BOT ${{ secrets.RG_BOT }} -RG_API_KEY ${{ secrets.RG_API_KEY }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      # Build
-      - name: Build project
-        uses: game-ci/unity-builder@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: WebGL
 
       # Output
       - uses: actions/upload-artifact@v3
