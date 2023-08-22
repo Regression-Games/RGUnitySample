@@ -17,6 +17,7 @@ public class RGBotTests
         // DEBUG: Set env vars for simulation
         Debug.Log("CUSTOM PARAMETERS");
         Debug.Log(Environment.GetEnvironmentVariable("CUSTOM_PARAMETERS"));
+        Debug.Log("Command Line Args:" + string.Join("~~~", Environment.GetCommandLineArgs()));
         // Environment.SetEnvironmentVariable(RGEnvVars.RG_API_KEY, "33a213ec-04bf-42cb-b2b6-9f430856f766");
         // Environment.SetEnvironmentVariable(RGEnvVars.RG_HOST, "http://localhost:8080");
         // Environment.SetEnvironmentVariable(RGEnvVars.RG_BOT, "1000015");
