@@ -45,10 +45,8 @@ jobs:
         uses: game-ci/unity-test-runner@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          RG_BOT: ${{ secrets.RG_BOT }}
-          RG_API_KEY: ${{ secrets.RG_API_KEY }}
         with:
-          customParameters: -RG_BOT ${{ secrets.RG_BOT }} -RG_API_KEY ${{ secrets.RG_API_KEY }}
+          customParameters: -RG_BOT ${{ secrets.RG_BOT }} -RG_API_KEY ${{ secrets.RG_API_KEY }} -RG_HOST ${{ secrets.RG_HOST }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       # Output

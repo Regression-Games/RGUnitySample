@@ -21,6 +21,11 @@ public class RGBotTests
         // Environment.SetEnvironmentVariable(RGEnvVars.RG_API_KEY, "33a213ec-04bf-42cb-b2b6-9f430856f766");
         // Environment.SetEnvironmentVariable(RGEnvVars.RG_HOST, "http://localhost:8080");
         // Environment.SetEnvironmentVariable(RGEnvVars.RG_BOT, "1000015");
+        
+        Debug.Log("HOST");
+        Debug.Log(RGEnvConfigs.ReadHost());
+        Debug.Log("BOT");
+        Debug.Log(RGEnvConfigs.ReadBotId());
 
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Scenes/SampleScene", LoadSceneMode.Single);
         // Wait until the level finish loading
@@ -30,7 +35,7 @@ public class RGBotTests
         yield return new WaitForEndOfFrame();
 
         // Start the bot
-        var providedBotId = Environment.GetEnvironmentVariable(RGEnvVars.RG_BOT);
+        var providedBotId = RGEnvConfigs.ReadBotId();
         if (providedBotId == null)
         {
             Assert.Fail("No Bot ID given within env var 'RG_BOT' - please make sure to set this in your CI env");
