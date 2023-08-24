@@ -18,7 +18,7 @@ public class RGBotTests
         const int TIMEOUT_IN_SECONDS = 60;
 
         // For in-editor purposes, feel free to define a default bot to use!
-        int defaultBotId = 1000015;
+        int defaultBotId = 109;
 
         // NOTE: Make sure to fill in the name of the scene to start your test with!
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Scenes/SampleScene", LoadSceneMode.Single);

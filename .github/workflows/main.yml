@@ -32,12 +32,12 @@ jobs:
           git reset --hard
 
       # Cache
-#      - uses: actions/cache@v3
-#        with:
-#          path: Library
-#          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-#          restore-keys: |
-#            Library-
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
 
       # Test
       # See https://game.ci/docs/github/test-runner for more information
