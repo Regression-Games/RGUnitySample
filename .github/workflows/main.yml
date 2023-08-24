@@ -48,6 +48,8 @@ jobs:
         with:
           customParameters: -RG_BOT ${{ secrets.RG_BOT }} -RG_API_KEY ${{ secrets.RG_API_KEY }} -RG_HOST ${{ secrets.RG_HOST }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+          useHostNetwork: true
+          #unityVersion: "2021.3.24f1\" -p 5000:5000 --env FAKE_ENV=\"need this to end the quote"
 
       # Output
       - uses: actions/upload-artifact@v3
