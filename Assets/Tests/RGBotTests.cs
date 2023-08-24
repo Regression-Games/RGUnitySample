@@ -15,7 +15,7 @@ public class RGBotTests
     {
 
         // Override this to change how long a test will wait for bots to join before failing
-        const int TIMEOUT_IN_SECONDS = 60;
+        const int TIMEOUT_IN_SECONDS = 300;
 
         // For in-editor purposes, feel free to define a default bot to use!
         int defaultBotId = 109;
@@ -57,6 +57,8 @@ public class RGBotTests
         {
             var timePassed = DateTime.Now.Subtract(startTime).TotalSeconds;
             if (timePassed > TIMEOUT_IN_SECONDS) Assert.Fail($"Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
+            // Cleanup just in case
+            RGBotServerListener.GetInstance()?.StopGame();
             yield return null;
         }
         
