@@ -65,11 +65,10 @@ public class RGBotTests
                 RGBotServerListener.GetInstance()?.StopGame();
                 Assert.Fail($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
             }
-            // Cleanup just in case
             yield return null;
         }
         
-        Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff}Bots connected! Letting them run...");
+        Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots connected! Letting them run...");
         // Now run until all bots complete their tasks
         while (RGBotServerListener.GetInstance().HasBotsRunning())
             yield return null;

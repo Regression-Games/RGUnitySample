@@ -143,13 +143,13 @@
       "url": "https://packages.unity.com"
     },
     "gg.regression.unity.bots": {
-      "version": "https://github.com/Regression-Games/RGUnityBots.git",
+      "version": "https://github.com/Regression-Games/RGUnityBots.git#aaron/reg-1099-logs",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.1.0"
       },
-      "hash": "92f972e5ab2e71b8bca5ddb84783c794e62d5dd7"
+      "hash": "501cf76e0e43ed3896b145d5d10cc73d3ceeb82e"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
