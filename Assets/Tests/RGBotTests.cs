@@ -56,9 +56,12 @@ public class RGBotTests
         while (!RGBotServerListener.GetInstance().HasBotsRunning())
         {
             var timePassed = DateTime.Now.Subtract(startTime).TotalSeconds;
-            if (timePassed > TIMEOUT_IN_SECONDS) Assert.Fail($"Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
+            if (timePassed > TIMEOUT_IN_SECONDS)
+            {
+                RGBotServerListener.GetInstance()?.StopGame();
+                Assert.Fail($"Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
+            }
             // Cleanup just in case
-            RGBotServerListener.GetInstance()?.StopGame();
             yield return null;
         }
         
