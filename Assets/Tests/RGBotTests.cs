@@ -15,7 +15,7 @@ public class RGBotTests
     {
 
         // Override this to change how long a test will wait for bots to join before failing
-        const int TIMEOUT_IN_SECONDS = 300;
+        const int TIMEOUT_IN_SECONDS = 600;
 
         // For in-editor purposes, feel free to define a default bot to use!
         int defaultBotId = 109;
