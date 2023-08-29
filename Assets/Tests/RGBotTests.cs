@@ -65,6 +65,7 @@ public class RGBotTests
                 RGBotServerListener.GetInstance()?.StopGame();
                 Assert.Fail($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
             }
+            Debug.Log("WAITING FOR BOTS TO CONNECT... inside the loop");
             yield return null;
         }
         
