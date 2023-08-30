@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using RegressionGames;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class RGBotTests
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Starting test");
 
         // Override this to change how long a test will wait for bots to join before failing
-        const int TIMEOUT_IN_SECONDS = 600;
+        const int TIMEOUT_IN_SECONDS = 60;
 
         // For in-editor purposes, feel free to define a default bot to use!
         int defaultBotId = 109;
@@ -42,12 +43,12 @@ public class RGBotTests
         
         // Start the bots
         RGBotServerListener.GetInstance().StartGame();
-        foreach (var botId in botIds)
+        var tasks = botIds.Select(botId =>
         {
             Debug.Log(
                 $"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
                 botId);
-            RGServiceManager.GetInstance()
+            return RGServiceManager.GetInstance()
                 .QueueInstantBot((long) botId, (botInstance) =>
                 {
                     RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
@@ -55,9 +56,15 @@ public class RGBotTests
                 {
                     Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
                 });
-        }
+        }).ToArray();
         RGBotServerListener.GetInstance().SpawnBots();
-        
+        Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for all bot start requests to send out...");
+        while (!tasks.All(t => t.IsCompleted))
+        {
+            yield return null;
+        }
+        Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} All bot requests finished!");
+
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for bots to connect...");
         var startTime = DateTime.Now;
