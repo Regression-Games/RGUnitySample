@@ -42,12 +42,12 @@ public class RGBotTests
         
         // Start the bots
         RGBotServerListener.GetInstance().StartGame();
-        botIds.Select(delegate(int botId)
+        foreach (var botId in botIds)
         {
             Debug.Log(
                 $"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
                 botId);
-            return RGServiceManager.GetInstance()
+            RGServiceManager.GetInstance()
                 .QueueInstantBot((long) botId, (botInstance) =>
                 {
                     RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
@@ -55,7 +55,7 @@ public class RGBotTests
                 {
                     Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
                 });
-        });
+        }
         RGBotServerListener.GetInstance().SpawnBots();
         
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
