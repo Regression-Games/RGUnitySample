@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using RegressionGames;
@@ -42,7 +43,7 @@ public class RGBotTests
         RGBotServerListener.GetInstance().StartGame();
         Task.WhenAll(botIds.Select(delegate(int botId)
         {
-            Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task to spawn bot with ID " + botId);
+            Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " + botId);
             return RGServiceManager.GetInstance()
                 .QueueInstantBot((long) botId, (botInstance) =>
                 {
@@ -65,7 +66,7 @@ public class RGBotTests
                 RGBotServerListener.GetInstance()?.StopGame();
                 Assert.Fail($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
             }
-            Debug.Log("WAITING FOR BOTS TO CONNECT... inside the loop");
+            Debug.Log($"WAITING FOR BOTS TO CONNECT... inside the loop in thread {Thread.CurrentThread.ManagedThreadId}");
             yield return null;
         }
         
