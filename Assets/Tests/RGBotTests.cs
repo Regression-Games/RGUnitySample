@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using RegressionGames;
 using UnityEngine;
@@ -14,6 +13,8 @@ public class RGBotTests
     [UnityTest]
     public IEnumerator RunBotTest()
     {
+        
+        Environment.SetEnvironmentVariable("RG_API_KEY", "db13dc42-06d5-409b-a894-80fbdde95288");
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Starting test");
 
         // Override this to change how long a test will wait for bots to join before failing
@@ -41,9 +42,11 @@ public class RGBotTests
         
         // Start the bots
         RGBotServerListener.GetInstance().StartGame();
-        Task.WhenAll(botIds.Select(delegate(int botId)
+        botIds.Select(delegate(int botId)
         {
-            Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " + botId);
+            Debug.Log(
+                $"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
+                botId);
             return RGServiceManager.GetInstance()
                 .QueueInstantBot((long) botId, (botInstance) =>
                 {
@@ -52,7 +55,7 @@ public class RGBotTests
                 {
                     Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
                 });
-        }));
+        });
         RGBotServerListener.GetInstance().SpawnBots();
         
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
