@@ -58,6 +58,10 @@ public class RGBotTests
                     Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
                 });
         }).ToArray();
+        foreach (var task in tasks)
+        {
+            task.RunSynchronously();
+        }
         RGBotServerListener.GetInstance().SpawnBots();
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for all bot start requests to send out...");
         var startTime1 = DateTime.Now;
@@ -84,13 +88,13 @@ public class RGBotTests
                 Assert.Fail($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
             }
             // Debug.Log($"WAITING FOR BOTS TO CONNECT... inside the loop in thread {Thread.CurrentThread.ManagedThreadId}");
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots connected! Letting them run...");
         // Now run until all bots complete their tasks
         while (RGBotServerListener.GetInstance().HasBotsRunning())
-            yield return null;
+            yield return new WaitForFixedUpdate();
         
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Test finished! Cleaning up");
         
