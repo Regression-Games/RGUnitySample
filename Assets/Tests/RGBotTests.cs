@@ -15,7 +15,6 @@ public class RGBotTests
     public IEnumerator RunBotTest()
     {
         
-        Environment.SetEnvironmentVariable("RG_API_KEY", "db13dc42-06d5-409b-a894-80fbdde95288");
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Starting test");
 
         // Override this to change how long a test will wait for bots to join before failing
