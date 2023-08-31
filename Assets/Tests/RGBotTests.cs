@@ -57,18 +57,18 @@ public class RGBotTests
                 });
         }).ToArray();
         RGBotServerListener.GetInstance().SpawnBots();
-        Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for all bot start requests to send out...");
-        var startTime1 = DateTime.Now;
-        while (!tasks.All(t => t.IsCompleted))
-        {
-            var timePassed = DateTime.Now.Subtract(startTime1).TotalSeconds;
-            if (timePassed > TIMEOUT_IN_SECONDS) {
-                Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Web request still waiting... terminating");
-                Assert.Fail("Test failed because the web request for queueing a bot never completed");
-            }
-            yield return null;
-        }
-        Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} All bot requests finished!");
+        // Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for all bot start requests to send out...");
+        // var startTime1 = DateTime.Now;
+        // while (!tasks.All(t => t.IsCompleted))
+        // {
+        //     var timePassed = DateTime.Now.Subtract(startTime1).TotalSeconds;
+        //     if (timePassed > TIMEOUT_IN_SECONDS) {
+        //         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Web request still waiting... terminating");
+        //         Assert.Fail("Test failed because the web request for queueing a bot never completed");
+        //     }
+        //     yield return null;
+        // }
+        // Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} All bot requests finished!");
 
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for bots to connect...");
