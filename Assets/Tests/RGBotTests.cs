@@ -80,8 +80,8 @@ public class RGBotTests
                 RGBotServerListener.GetInstance()?.StopGame();
                 Assert.Fail($"{timeNow()} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
             }
-            Debug.Log($"WAITING FOR BOTS TO CONNECT... inside the loop in thread {Thread.CurrentThread.ManagedThreadId}");
-            yield return new WaitForSeconds(5);
+            Debug.Log($"{timeNow()} WAITING FOR BOTS TO CONNECT... inside the loop in thread {Thread.CurrentThread.ManagedThreadId}");
+            yield return new WaitForSecondsRealtime(5);
         }
         
         Debug.Log($"{timeNow()} Bots connected! Letting them run...");
