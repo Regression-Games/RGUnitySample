@@ -44,7 +44,7 @@ public class RGBotTests
         
         // Start the bots
         RGBotServerListener.GetInstance().StartGame();
-        var tasks = botIds.Select(botId =>
+        var task = Task.WhenAll(botIds.Select(botId =>
         {
             Debug.Log(
                 $"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
@@ -57,15 +57,11 @@ public class RGBotTests
                 {
                     Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
                 });
-        }).ToArray();
-        foreach (var task in tasks)
-        {
-            task.RunSynchronously();
-        }
-        RGBotServerListener.GetInstance().SpawnBots();
+        }));
+
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for all bot start requests to send out...");
         var startTime1 = DateTime.Now;
-        while (!tasks.All(t => t.IsCompleted))
+        while (!task.IsCompleted)
         {
             var timePassed = DateTime.Now.Subtract(startTime1).TotalSeconds;
             if (timePassed > TIMEOUT_IN_SECONDS) {
@@ -76,6 +72,8 @@ public class RGBotTests
         }
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} All bot requests finished!");
 
+        RGBotServerListener.GetInstance().SpawnBots();
+        
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for bots to connect...");
         var startTime = DateTime.Now;
