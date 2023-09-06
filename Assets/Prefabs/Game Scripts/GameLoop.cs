@@ -12,21 +12,21 @@ public class GameLoop : MonoBehaviour
 
     public GameObject powerUpPrefab;
     public GameObject platform;
-
-    void Awake()
+    
+    public void Start()
     {
         RGSettings rgSettings = RGSettings.GetOrCreateSettings();
         if (rgSettings.GetUseSystemSettings())
         {
             int[] botIds = rgSettings.GetBotsSelected().ToArray();
-            int errorCount = 0;
-            Task.WhenAll(botIds.Select(botId =>
-                RGServiceManager.GetInstance()
-                    ?.QueueInstantBot((long)botId, (botInstance) => { }, () => errorCount++)));
-            if (errorCount > 0)
-            {
-                Debug.Log($"Error starting {errorCount} of {botIds.Length} RG bots, starting without them");
-            }
+            botIds.Select(botId =>
+                RGServiceManager.GetInstance()?.QueueInstantBot((long)botId, (botInstance) =>
+                {
+                    RGBotServerListener.GetInstance()?.AddClientConnectionForBotInstance(botInstance.id);
+                }, () =>
+                {
+                    RGDebug.LogWarning($"WARNING: Error starting botId: {botId}, starting without them");
+                }));
         }
         RGBotServerListener.GetInstance()?.StartGame();
         RGBotServerListener.GetInstance()?.SpawnBots();
@@ -37,11 +37,9 @@ public class GameLoop : MonoBehaviour
         RGBotServerListener.GetInstance()?.StopGame();
     }
 
-    // Update is called once per frame
     void Update()
     {
         // If there are no power ups available, create a new one at a random position
-
         if (FindObjectOfType<PowerUp>() == null)
         {
             var middleOfPlatform = platform.transform.position;
@@ -52,6 +50,5 @@ public class GameLoop : MonoBehaviour
             );
             Instantiate(powerUpPrefab, spawnPosition, Quaternion.identity);
         }
-        
     }
 }

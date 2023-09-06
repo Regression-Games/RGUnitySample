@@ -45,31 +45,22 @@ public class RGBotTests
         // Start the bots
         RGBotServerListener.GetInstance().StartGame();
         var task = Task.WhenAll(botIds.Select(botId =>
-        {
-            Debug.Log(
-                $"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Creating task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
-                botId);
-            return RGServiceManager.GetInstance()
-                .QueueInstantBot((long) botId, (botInstance) =>
-                {
-                    RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
-                }, () =>
-                {
-                    Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
-                });
-        }));
+            Task.Run( async() => {
+                Debug.Log(
+                    $"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Running task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
+                    botId);
+                await RGServiceManager.GetInstance()
+                    .QueueInstantBot((long) botId, (botInstance) =>
+                    {
+                        RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
+                    }, () =>
+                    {
+                        Debug.LogError($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Error starting bot with ID {botId}");
+                    });
+            })));
 
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Waiting for all bot start requests to send out...");
-        var startTime1 = DateTime.Now;
-        while (!task.IsCompleted)
-        {
-            var timePassed = DateTime.Now.Subtract(startTime1).TotalSeconds;
-            if (timePassed > TIMEOUT_IN_SECONDS) {
-                Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Web request still waiting... terminating");
-                Assert.Fail("Test failed because the web request for queueing a bot never completed");
-            }
-            yield return new WaitForFixedUpdate();
-        }
+        yield return new WaitUntil(() => task.IsCompleted);
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} All bot requests finished!");
 
         RGBotServerListener.GetInstance().SpawnBots();
@@ -91,8 +82,7 @@ public class RGBotTests
         
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Bots connected! Letting them run...");
         // Now run until all bots complete their tasks
-        while (RGBotServerListener.GetInstance().HasBotsRunning())
-            yield return new WaitForFixedUpdate();
+        yield return new WaitUntil(() => !RGBotServerListener.GetInstance().HasBotsRunning());
         
         Debug.Log($"{DateTime.Now:yyyy-MM-dd- HH:mm:ss:ffff} Test finished! Cleaning up");
         
