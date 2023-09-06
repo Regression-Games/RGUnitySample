@@ -25,7 +25,7 @@ public class RGBotTests
         Debug.Log($"{timeNow()} Starting test");
 
         // Override this to change how long a test will wait for bots to join before failing
-        const int TIMEOUT_IN_SECONDS = 120;
+        const int TIMEOUT_IN_SECONDS = 60;
 
         // For in-editor purposes, feel free to define a default bot to use!
         int defaultBotId = 109;
@@ -50,38 +50,36 @@ public class RGBotTests
         // do this before the queue
         RGBotServerListener.GetInstance().StartGame();
         
-        // Start the bots
-        var task = Task.WhenAll(botIds.Select(async (botId) =>  {
-                Debug.Log(
-                    $"{timeNow()} Running task ({Thread.CurrentThread.ManagedThreadId}) to spawn bot with ID " +
-                    botId);
-                await RGServiceManager.GetInstance()
-                    .QueueInstantBot((long) botId, (botInstance) =>
-                    {
-                        RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
-                    }, () =>
-                    {
-                        Debug.LogError($"{timeNow()} Error starting bot with ID {botId}");
-                    });
-            }));
-
-        Debug.Log($"{timeNow()} Waiting for all bot start requests to send out...");
-        yield return new WaitUntil(() => task.IsCompleted);
-        Debug.Log($"{timeNow()} All bot requests finished!");
+        // Start the bots (note that the unity web request needs the main thread, so we can't tie it up)
+        // thus... we don't do this async, we wait for each one
+        foreach (var botId in botIds)
+        {
+            Debug.Log(
+                $"{timeNow()} Running task to spawn bot with ID: {botId}");
+            var task = RGServiceManager.GetInstance()
+                .QueueInstantBot((long) botId, (botInstance) =>
+                {
+                    RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
+                }, () =>
+                {
+                    Debug.LogError($"{timeNow()} Error starting bot with ID {botId}");
+                });
+            Debug.Log($"{timeNow()} Waiting for bot ID: {botId} to be queued...");
+            yield return new WaitUntil(() => task.IsCompleted);
+        }
+        
+        Debug.Log($"{timeNow()} All bots queued!");
         
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
         Debug.Log($"{timeNow()} Waiting for bots to connect...");
         var startTime = DateTime.Now;
-        while (!RGBotServerListener.GetInstance().HasBotsRunning())
+        yield return new WaitUntil(() =>RGBotServerListener.GetInstance().HasBotsRunning() ||
+                   (DateTime.Now.Subtract(startTime).TotalSeconds > TIMEOUT_IN_SECONDS));
+
+        if (!RGBotServerListener.GetInstance().HasBotsRunning())
         {
-            var timePassed = DateTime.Now.Subtract(startTime).TotalSeconds;
-            if (timePassed > TIMEOUT_IN_SECONDS)
-            {
-                RGBotServerListener.GetInstance()?.StopGame();
-                Assert.Fail($"{timeNow()} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
-            }
-            Debug.Log($"{timeNow()} WAITING FOR BOTS TO CONNECT... inside the loop in thread {Thread.CurrentThread.ManagedThreadId}");
-            yield return new WaitForSecondsRealtime(5);
+            RGBotServerListener.GetInstance()?.StopGame();
+            Assert.Fail($"{timeNow()} Bots failed to connect within {TIMEOUT_IN_SECONDS} seconds");
         }
         
         Debug.Log($"{timeNow()} Bots connected! Letting them run...");
