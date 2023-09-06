@@ -47,6 +47,9 @@ public class RGBotTests
         int[] botIds = {defaultBotId};
         Debug.Log($"{timeNow()} Loaded config, using bots {string.Join(", ", botIds)}");
         
+        // do this before the queue
+        RGBotServerListener.GetInstance().StartGame();
+        
         // Start the bots
         var task = Task.WhenAll(botIds.Select(async (botId) =>  {
                 Debug.Log(
@@ -66,9 +69,6 @@ public class RGBotTests
         yield return new WaitUntil(() => task.IsCompleted);
         Debug.Log($"{timeNow()} All bot requests finished!");
         
-        RGBotServerListener.GetInstance().StartGame();
-        RGBotServerListener.GetInstance().SpawnBots();
-        
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
         Debug.Log($"{timeNow()} Waiting for bots to connect...");
         var startTime = DateTime.Now;
@@ -85,6 +85,7 @@ public class RGBotTests
         }
         
         Debug.Log($"{timeNow()} Bots connected! Letting them run...");
+        RGBotServerListener.GetInstance().SpawnBots();
         // Now run until all bots complete their tasks
         yield return new WaitUntil(() => !RGBotServerListener.GetInstance().HasBotsRunning());
         
