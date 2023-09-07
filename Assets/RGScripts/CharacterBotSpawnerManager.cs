@@ -19,13 +19,15 @@ public class CharacterBotSpawnerManager : RGBotSpawnManager
         var bot = Instantiate(rgBotPrefab, Vector3.zero, Quaternion.identity);
         bot.transform.position = botSpawnPoint.position;
 
-        RGPlayerMoveAction moveAction = bot.GetComponent<RGPlayerMoveAction>();
         BotCharacterConfig config = botInformation.ParseCharacterConfig<BotCharacterConfig>();
+        
+        // set player speed
+        Player player = bot.GetComponent<Player>();
         if (config != null)
         {
-            Debug.Log($"Changed speed to ${config.speed}");
-            moveAction.speed = config.speed;
+            player.speed = config.speed;
         }
+
         return bot;
     }
     
