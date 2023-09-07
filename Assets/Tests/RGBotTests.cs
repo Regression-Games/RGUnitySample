@@ -35,8 +35,11 @@ public class RGBotTests
         AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Scenes/SampleScene", LoadSceneMode.Single);
         // Wait until the scene finishes loading, then wait a frame so every Awake and Start method is called
         while (!asyncLoadLevel.isDone)
+        {
             yield return null;
+        }
         yield return new WaitForEndOfFrame();
+        
         Debug.Log($"{timeNow()} Scene loaded");
 
         // Grab the bot to start (override with the one from CI/CD if defined)
@@ -65,7 +68,7 @@ public class RGBotTests
                     Debug.LogError($"{timeNow()} Error starting bot with ID {botId}");
                 });
             Debug.Log($"{timeNow()} Waiting for bot ID: {botId} to be queued (Completed: {task.IsCompleted}) ...");
-            yield return new WaitUntil(() => task.IsCompleted);
+            yield return new WaitUntil(() => task.IsCompleted && (int)task.Status > (int)TaskStatus.WaitingForChildrenToComplete);
             if (!task.IsCompletedSuccessfully)
             {
                 Debug.LogWarning($"{timeNow()} Error running task to queue bot id: {botId}\r\n" +
@@ -77,9 +80,7 @@ public class RGBotTests
                                  $"Exception: {task.Exception}");
             }
         }
-        
-        
-        
+
         Debug.Log($"{timeNow()} All bots queued!");
         
         // Wait until at least one bot is connected. Fail the test if the connection takes too long
