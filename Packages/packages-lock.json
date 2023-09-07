@@ -143,13 +143,13 @@
       "url": "https://packages.unity.com"
     },
     "gg.regression.unity.bots": {
-      "version": "https://github.com/Regression-Games/RGUnityBots.git#zack/ci-fix",
+      "version": "https://github.com/Regression-Games/RGUnityBots.git",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.1.0"
       },
-      "hash": "c4ac242c09275244288606b6aa07130c614b4a3a"
+      "hash": "5d3bf0bda167afaa34ed0a5dea59d055b36a62d5"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
