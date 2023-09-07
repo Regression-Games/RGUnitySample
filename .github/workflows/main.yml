@@ -49,7 +49,6 @@ jobs:
           customParameters: -RG_BOT ${{ secrets.RG_BOT }} -RG_API_KEY ${{ secrets.RG_API_KEY }} -RG_HOST ${{ secrets.RG_HOST }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: PlayMode
-          useHostNetwork: true
 
       # Output
       - uses: actions/upload-artifact@v3
