@@ -64,7 +64,7 @@ public class RGBotTests
                 {
                     Debug.LogError($"{timeNow()} Error starting bot with ID {botId}");
                 });
-            Debug.Log($"{timeNow()} Waiting for bot ID: {botId} to be queued...");
+            Debug.Log($"{timeNow()} Waiting for bot ID: {botId} to be queued (Completed: {task.IsCompleted}) ...");
             yield return new WaitUntil(() => task.IsCompleted);
             if (!task.IsCompletedSuccessfully)
             {
