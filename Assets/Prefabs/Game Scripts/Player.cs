@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RegressionGames;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    private Vector3? targetPosition;
+    private Rigidbody rigidbody;
+    public float speed = 100f;
+    public float range = 1f;
     private Rigidbody _rigidbody;
     
     // Start is called before the first frame update
@@ -14,19 +18,29 @@ public class Player : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
         
+        // If we are in range, reset the action
+        if (targetPosition != null && Vector3.Distance((Vector3) targetPosition, transform.position) < range)
+        {
+            targetPosition = null;
+        }
+        
+        // Set the target velocity
+        if (targetPosition != null)
+        {
+            Vector3 direction = ((Vector3)targetPosition - transform.position).normalized;
+            direction.y = 0;
+            float force = speed * Time.deltaTime;
+            _rigidbody.AddForce(direction * force);
+        }
     }
 
-    public void MoveTowards(PowerUp powerUp)
+    [RGAction]
+    public void MoveToPosition(float x, float y, float z)
     {
-        if (powerUp)
-        {
-            var dir = (powerUp.transform.position - transform.position).normalized;
-            _rigidbody.MovePosition(_rigidbody.transform.position + dir * 5.0f * Time.fixedDeltaTime);
-        }
+        targetPosition = new Vector3(x, y, z);
     }
 
     private void OnCollisionEnter(Collision collision)
