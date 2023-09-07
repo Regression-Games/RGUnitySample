@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using RegressionGames;
 using UnityEngine;
@@ -17,12 +14,11 @@ public class RGBotTests
     {
         return $"{DateTime.Now:yyyy-MM-ddTHH:mm:ss:ffff}  [{Thread.CurrentThread.ManagedThreadId}] --- ";
     }
+    
     [UnityTest]
     public IEnumerator RunBotTest()
     {
-        
-        Environment.SetEnvironmentVariable("RG_API_KEY", "fef15243-8ab4-478f-8aeb-2e05277a7a2d");
-        
+
         Debug.Log($"{timeNow()} Starting test");
 
         // Override this to change how long a test will wait for bots to join before failing
@@ -31,7 +27,7 @@ public class RGBotTests
         const int TEST_RUN_TIMEOUT_IN_SECONDS = 60;
 
         // For in-editor purposes, feel free to define a default bot to use!
-        int defaultBotId = 109;
+        int defaultBotId = 0;
 
         // NOTE: Make sure to fill in the name of the scene to start your test with!
         Debug.Log($"{timeNow()} Waiting for scene to load...");
