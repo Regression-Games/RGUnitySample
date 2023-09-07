@@ -68,7 +68,12 @@ public class RGBotTests
             yield return new WaitUntil(() => task.IsCompleted);
             if (!task.IsCompletedSuccessfully)
             {
-                Debug.LogWarning($"{timeNow()} Error running task to queue bot id: {botId} - {task.Exception}");
+                Debug.LogWarning($"{timeNow()} Error running task to queue bot id: {botId}\r\n" +
+                                 $"Status: {task.Status}\r\n" +
+                                 $"AsyncState: {task.AsyncState}\r\n" +
+                                 $"Cancelled: {task.IsCanceled}\r\n" +
+                                 $"Faulted: {task.IsFaulted}\r\n" +
+                                 $"Exception: {task.Exception}");
             }
         }
         
