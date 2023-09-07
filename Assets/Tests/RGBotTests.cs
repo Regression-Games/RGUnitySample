@@ -71,7 +71,8 @@ public class RGBotTests
                 Debug.LogWarning($"{timeNow()} Error running task to queue bot id: {botId}\r\n" +
                                  $"Status: {task.Status}\r\n" +
                                  $"AsyncState: {task.AsyncState}\r\n" +
-                                 $"Cancelled: {task.IsCanceled}\r\n" +
+                                 $"Completed: {task.IsCompleted}\r\n" +
+                                 $"Canceled: {task.IsCanceled}\r\n" +
                                  $"Faulted: {task.IsFaulted}\r\n" +
                                  $"Exception: {task.Exception}");
             }
