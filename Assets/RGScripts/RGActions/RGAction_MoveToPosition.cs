@@ -30,9 +30,10 @@ namespace RegressionGames
             {
                 float.TryParse(xInput, out x);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 RGDebug.LogError("Failed to parse 'x'");
+                RGDebug.LogError(ex.Message);
             }
             finally
             {
@@ -44,9 +45,10 @@ namespace RegressionGames
             {
                 float.TryParse(yInput, out y);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 RGDebug.LogError("Failed to parse 'y'");
+                RGDebug.LogError(ex.Message);
             }
             finally
             {
@@ -58,9 +60,10 @@ namespace RegressionGames
             {
                 float.TryParse(zInput, out z);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 RGDebug.LogError("Failed to parse 'z'");
+                RGDebug.LogError(ex.Message);
             }
             finally
             {
