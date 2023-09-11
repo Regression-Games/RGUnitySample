@@ -147,9 +147,10 @@
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.1.0"
+        "com.unity.nuget.newtonsoft-json": "3.1.0",
+        "com.unity.textmeshpro": "3.0.6"
       },
-      "hash": "5d3bf0bda167afaa34ed0a5dea59d055b36a62d5"
+      "hash": "213db96a3203c201ab5cf56baf61cc592625a424"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
