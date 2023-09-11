@@ -24,6 +24,12 @@ namespace RegressionGames
 
         public override void StartAction(Dictionary<string, object> input)
         {
+            if (!input.ContainsKey("x"))
+            {
+                RGDebug.LogError("No parameter 'x' found");
+                return;
+            }
+
             string xInput = input["x"].ToString();
             float x = default;
             try
@@ -39,6 +45,12 @@ namespace RegressionGames
             {
             }
 
+            if (!input.ContainsKey("y"))
+            {
+                RGDebug.LogError("No parameter 'y' found");
+                return;
+            }
+
             string yInput = input["y"].ToString();
             float y = default;
             try
@@ -52,6 +64,12 @@ namespace RegressionGames
             }
             finally
             {
+            }
+
+            if (!input.ContainsKey("z"))
+            {
+                RGDebug.LogError("No parameter 'z' found");
+                return;
             }
 
             string zInput = input["z"].ToString();
