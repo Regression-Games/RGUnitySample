@@ -7,7 +7,6 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Vector3? targetPosition;
-    private Rigidbody rigidbody;
     public float speed = 100f;
     public float range = 1f;
     private Rigidbody _rigidbody;
@@ -18,7 +17,7 @@ public class Player : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         
         // If we are in range, reset the action
