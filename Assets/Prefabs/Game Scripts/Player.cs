@@ -7,7 +7,9 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Vector3? targetPosition;
+    [RGState]
     public float speed = 100f;
+    [RGState("ResetActionRange")]
     public float range = 1f;
     private Rigidbody _rigidbody;
     
