@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using NUnit.Framework;
 using RegressionGames;
+using RegressionGames.Types;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -60,7 +61,7 @@ public class RGBotTests
             var task = RGServiceManager.GetInstance()
                 .QueueInstantBot((long) botId, (botInstance) =>
                 {
-                    RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id);
+                    RGBotServerListener.GetInstance().AddClientConnectionForBotInstance(botInstance.id, RGClientConnectionType.REMOTE);
                 }, () =>
                 {
                     Debug.LogError($"{timeNow()} Error starting bot with ID {botId}");
