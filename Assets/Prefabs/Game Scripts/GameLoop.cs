@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RegressionGames;
+using RegressionGames.Types;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,11 +19,11 @@ public class GameLoop : MonoBehaviour
         RGSettings rgSettings = RGSettings.GetOrCreateSettings();
         if (rgSettings.GetUseSystemSettings())
         {
-            int[] botIds = rgSettings.GetBotsSelected().ToArray();
+            long[] botIds = rgSettings.GetBotsSelected().ToArray();
             botIds.Select(botId =>
                 RGServiceManager.GetInstance()?.QueueInstantBot((long)botId, (botInstance) =>
                 {
-                    RGBotServerListener.GetInstance()?.AddClientConnectionForBotInstance(botInstance.id);
+                    RGBotServerListener.GetInstance()?.AddClientConnectionForBotInstance(botInstance.id, RGClientConnectionType.REMOTE);
                 }, () =>
                 {
                     RGDebug.LogWarning($"WARNING: Error starting botId: {botId}, starting without them");
