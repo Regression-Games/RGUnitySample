@@ -85,3 +85,6 @@ mono_crash*.json
 
 # Auto-generated test scenes
 /[Aa]ssets/InitTestScene*.unity*
+
+RegressionGamesZipTemp
+RegressionGames.zip
