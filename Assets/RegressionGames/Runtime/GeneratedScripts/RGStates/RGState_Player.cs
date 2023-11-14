@@ -14,7 +14,7 @@ namespace RegressionGames.RGBotConfigs
     public class RGStateEntity_Player : RGStateEntity<RGState_Player>
     {
         public float speed => (float)float.Parse(this.GetValueOrDefault("speed").ToString());
-        public float range => (float)float.Parse(this.GetValueOrDefault("range").ToString());
+        public float ResetActionRange => (float)float.Parse(this.GetValueOrDefault("ResetActionRange").ToString());
     }
 
     public class RGState_Player : RGState
@@ -27,6 +27,11 @@ namespace RegressionGames.RGBotConfigs
             {
                 RGDebug.LogError("Player not found");
             }
+        }
+
+        protected override Type GetTypeForStateEntity()
+        {
+            return typeof(RGStateEntity_Player);
         }
 
         protected override Dictionary<string, object> GetState()
